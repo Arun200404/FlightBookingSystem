@@ -39,6 +39,13 @@ namespace FlightBookingBackend.Services
             var user = _authRepository.GetUserById(userId)
                 ?? throw new NotFoundException("User not found");
 
+            if (string.IsNullOrWhiteSpace(request.PassengerName) || request.PassengerName.Length < 2)
+                throw new BadRequestException("Passenger name must be at least 2 characters");
+
+            if (request.Gender != "Male" && request.Gender != "Female" && request.Gender != "Other")
+                throw new BadRequestException("Gender must be Male, Female, or Other");
+                
+
             flight.AvailableSeats -= 1;
 
             var fareDetails = _fareService.CalculateFare(request.FlightNumber);

@@ -16,30 +16,6 @@ namespace FlightBookingBackend.Controllers
             _flightService = flightService;
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost("add")]
-        public IActionResult AddFlight([FromBody] FlightRequest request)
-        {
-            var result = _flightService.AddFlight(request);
-            return Ok(result);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPut("update/{flightNumber}")]
-        public IActionResult UpdateFlight(string flightNumber, [FromBody] UpdateFlightRequest request)
-        {
-            var result = _flightService.UpdateFlight(flightNumber, request);
-            return Ok(result);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpDelete("delete/{flightNumber}")]
-        public IActionResult DeleteFlight(string flightNumber)
-        {
-            var result = _flightService.DeleteFlight(flightNumber);
-            return Ok(result);
-        }
-
         [Authorize]
         [HttpGet("all")]
         public IActionResult GetAllFlights()

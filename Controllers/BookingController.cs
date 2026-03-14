@@ -27,7 +27,7 @@ namespace FlightBookingBackend.Controllers
         }
 
         [Authorize]
-        [HttpGet("search")]
+        [HttpGet("search/{flightNumber}")]
         public IActionResult SearchBooking([FromQuery] string bookingReference)
         {
             var result = _bookingService.SearchBooking(bookingReference);

@@ -19,42 +19,22 @@ namespace FlightBookingBackend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Flight precision
-            modelBuilder.Entity<Flight>()
-                .Property(f => f.Fare)
-                .HasPrecision(18, 2);
+            modelBuilder.Entity<Flight>().Property(f => f.Fare).HasPrecision(18, 2);
 
-            // Booking precision
-            modelBuilder.Entity<Booking>()
-                .Property(b => b.BaseFare)
-                .HasPrecision(18, 2);
+            modelBuilder.Entity<Booking>().Property(b => b.BaseFare).HasPrecision(18, 2);
 
-            modelBuilder.Entity<Booking>()
-                .Property(b => b.FinalFare)
-                .HasPrecision(18, 2);
+            modelBuilder.Entity<Booking>().Property(b => b.FinalFare).HasPrecision(18, 2);
 
-            // Unique indexes - User
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Username)
-                .IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
 
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
 
-            // Unique indexes - Flight
-            modelBuilder.Entity<Flight>()
-                .HasIndex(f => f.FlightNumber)
-                .IsUnique();
 
-            // Unique indexes - Admin
-            modelBuilder.Entity<Admin>()
-                .HasIndex(a => a.Username)
-                .IsUnique();
+            modelBuilder.Entity<Flight>().HasIndex(f => f.FlightNumber).IsUnique();
 
-            modelBuilder.Entity<Admin>()
-                .HasIndex(a => a.Email)
-                .IsUnique();
+            modelBuilder.Entity<Admin>().HasIndex(a => a.Username).IsUnique();
+
+            modelBuilder.Entity<Admin>().HasIndex(a => a.Email).IsUnique();
         }
     }
 }

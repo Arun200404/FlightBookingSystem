@@ -36,6 +36,16 @@ namespace FlightBookingBackend.Services
             if (_authRepository.GetUserByEmail(request.Email) != null)
                 throw new BadRequestException("Email already exists");
 
+            if (string.IsNullOrWhiteSpace(request.Username) || request.Username.Length < 3)
+                throw new BadRequestException("Username must be at least 3 characters");
+
+            if (string.IsNullOrWhiteSpace(request.Email) || !request.Email.Contains("@"))
+                throw new BadRequestException("Invalid email format");
+
+            if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 6)
+                throw new BadRequestException("Password must be at least 6 characters");
+
+
             var user = new User
             {
                 Username = request.Username,
@@ -55,7 +65,6 @@ namespace FlightBookingBackend.Services
             }
             catch
             {
-                // Email failure should not block registration
             }
 
             return "User registered successfully";
@@ -79,8 +88,8 @@ namespace FlightBookingBackend.Services
             if (admin == null)
                 throw new UnauthorizedException("Invalid admin credentials");
 
-            // if (!BCrypt.Net.BCrypt.Verify(request.Password, admin.Password))
-            //     throw new UnauthorizedException("Invalid admin credentials");
+            if (request.Password != admin.Password)
+                throw new UnauthorizedException("Invalid admin credentials");
 
             return GenerateToken(admin.Id.ToString(), admin.Username, "Admin");
         }
