@@ -25,7 +25,7 @@ namespace FlightBookingBackend.Controllers
         }
 
         [Authorize]
-        [HttpGet("search/{flightNumber}")]
+        [HttpGet("search")]
         public async Task<IActionResult> SearchBooking([FromQuery] string bookingReference)
         {
             var result = await _bookingService.SearchBookingAsync(bookingReference);

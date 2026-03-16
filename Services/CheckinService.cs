@@ -61,7 +61,7 @@ namespace FlightBookingBackend.Services
             }
             catch
             {
-                // Email failure must not crash the check-in
+                return $"Check-in successful. Check-In Reference: {checkin.CheckInReference}, Seat: {seatNumber}\nEmail Service Faied";
             }
 
             return $"Check-in successful. Check-In Reference: {checkin.CheckInReference}, Seat: {seatNumber}";

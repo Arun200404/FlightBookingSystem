@@ -7,6 +7,7 @@ namespace FlightBookingBackend.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
+        
         private readonly ApplicationDbContext _context;
 
         public AuthRepository(ApplicationDbContext context)
@@ -39,3 +40,4 @@ namespace FlightBookingBackend.Repositories
         }
     }
 }
+

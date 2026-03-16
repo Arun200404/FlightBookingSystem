@@ -57,24 +57,22 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-
 builder.Services.AddScoped<IFlightRepository, FlightRepository>();
 builder.Services.AddScoped<IFlightService, FlightService>();
-
 
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 
-
 builder.Services.AddScoped<IFareRepository, FareRepository>();
 builder.Services.AddScoped<IFareService, FareService>();
-
 
 builder.Services.AddScoped<ICheckinRepository, CheckinRepository>();
 builder.Services.AddScoped<ICheckinService, CheckinService>();
 
-
 builder.Services.AddScoped<IEmailService, EmailService>();
+
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

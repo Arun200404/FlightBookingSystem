@@ -12,19 +12,22 @@ namespace FlightBookingBackend.Services
         private readonly IFareService _fareService;
         private readonly IEmailService _emailService;
         private readonly IAuthRepository _authRepository;
+        private readonly IPaymentService _paymentService;
 
         public BookingService(
             IBookingRepository bookingRepository,
             IFlightRepository flightRepository,
             IFareService fareService,
             IEmailService emailService,
-            IAuthRepository authRepository)
+            IAuthRepository authRepository,
+            IPaymentService paymentService)
         {
             _bookingRepository = bookingRepository;
             _flightRepository = flightRepository;
             _fareService = fareService;
             _emailService = emailService;
             _authRepository = authRepository;
+            _paymentService = paymentService;
         }
 
         public async Task<string> CreateBookingAsync(BookingRequest request, int userId)
@@ -47,6 +50,11 @@ namespace FlightBookingBackend.Services
             flight.AvailableSeats -= 1;
 
             var fareDetails = await _fareService.CalculateFareAsync(request.FlightNumber);
+
+            var paymentSuccess = await _paymentService.ProcessPaymentAsync(fareDetails.FinalFare);
+            if (!paymentSuccess)
+                throw new BadRequestException("Payment failed. Booking not confirmed.");
+
 
             var booking = new Booking
             {
@@ -86,7 +94,7 @@ namespace FlightBookingBackend.Services
             }
             catch
             {
-                // Email failure must not fail the booking
+                return $"Booking successful. Your Booking Reference: {booking.BookingReference}\nEmail service failed";
             }
 
             return $"Booking successful. Your Booking Reference: {booking.BookingReference}";

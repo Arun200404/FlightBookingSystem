@@ -64,7 +64,7 @@ namespace FlightBookingBackend.Services
             }
             catch
             {
-                // Email failure must not fail the registration
+                return "User registered successfully\nEmail Service failed";
             }
 
             return "User registered successfully";
@@ -79,6 +79,7 @@ namespace FlightBookingBackend.Services
 
             return GenerateToken(user.UserId.ToString(), user.Username, "User");
         }
+
 
         public async Task<string> AdminLoginAsync(AdminLoginRequest request)
         {
