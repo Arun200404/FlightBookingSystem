@@ -1,6 +1,7 @@
 using FlightBookingBackend.Data;
 using FlightBookingBackend.Interfaces;
 using FlightBookingBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightBookingBackend.Repositories
 {
@@ -13,20 +14,22 @@ namespace FlightBookingBackend.Repositories
             _context = context;
         }
 
-        public Admin? GetAdminByUsername(string username)
+        public async Task<Admin?> GetAdminByUsernameAsync(string username)
         {
-            return _context.Admins.FirstOrDefault(a => a.Username == username);
+            return await _context.Admins
+                .FirstOrDefaultAsync(a => a.Username == username);
         }
 
-        public Admin? GetAdminByEmail(string email)
+        public async Task<Admin?> GetAdminByEmailAsync(string email)
         {
-            return _context.Admins.FirstOrDefault(a => a.Email == email);
+            return await _context.Admins
+                .FirstOrDefaultAsync(a => a.Email == email);
         }
 
-        public void AddAdmin(Admin admin)
+        public async Task AddAdminAsync(Admin admin)
         {
             _context.Admins.Add(admin);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

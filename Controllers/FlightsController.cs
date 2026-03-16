@@ -18,17 +18,17 @@ namespace FlightBookingBackend.Controllers
 
         [Authorize]
         [HttpGet("all")]
-        public IActionResult GetAllFlights()
+        public async Task<IActionResult> GetAllFlights()
         {
-            var result = _flightService.GetAllFlights();
+            var result = await _flightService.GetAllFlightsAsync();
             return Ok(result);
         }
 
         [Authorize]
         [HttpGet("search")]
-        public IActionResult SearchFlights([FromQuery] SearchFlightRequest request)
+        public async Task<IActionResult> SearchFlights([FromQuery] SearchFlightRequest request)
         {
-            var result = _flightService.SearchFlights(request.Source, request.Destination, request.Date);
+            var result = await _flightService.SearchFlightsAsync(request.Source, request.Destination, request.Date);
 
             if (result.Count == 0)
                 return NotFound("No flights found for the given search criteria");

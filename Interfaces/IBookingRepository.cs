@@ -4,8 +4,8 @@ namespace FlightBookingBackend.Interfaces
 {
     public interface IBookingRepository
     {
-        void AddBooking(Booking booking);
-        Booking? GetBookingByReference(string bookingReference);
-        void Save();
+        Task AddBookingAsync(Booking booking);
+        Task<Booking?> GetBookingByReferenceAsync(string bookingReference);
+        Task SaveAsync();
     }
 }

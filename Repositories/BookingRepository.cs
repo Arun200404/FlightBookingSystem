@@ -1,33 +1,34 @@
 using FlightBookingBackend.Data;
 using FlightBookingBackend.Interfaces;
 using FlightBookingBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightBookingBackend.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
         private readonly ApplicationDbContext _context;
-        
 
         public BookingRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public void AddBooking(Booking booking)
+        public async Task AddBookingAsync(Booking booking)
         {
             _context.Bookings.Add(booking);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Booking? GetBookingByReference(string bookingReference)
+        public async Task<Booking?> GetBookingByReferenceAsync(string bookingReference)
         {
-            return _context.Bookings.FirstOrDefault(x => x.BookingReference == bookingReference);
+            return await _context.Bookings
+                .FirstOrDefaultAsync(x => x.BookingReference == bookingReference);
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

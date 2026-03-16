@@ -4,7 +4,7 @@ namespace FlightBookingBackend.Interfaces
 {
     public interface IBookingService
     {
-        string CreateBooking(BookingRequest request, int userId);
-        BookingResponse? SearchBooking(string bookingReference);
+        Task<string> CreateBookingAsync(BookingRequest request, int userId);
+        Task<BookingResponse?> SearchBookingAsync(string bookingReference);
     }
 }

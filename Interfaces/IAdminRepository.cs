@@ -4,8 +4,8 @@ namespace FlightBookingBackend.Interfaces
 {
     public interface IAdminRepository
     {
-        Admin? GetAdminByUsername(string username);
-        Admin? GetAdminByEmail(string email);
-        void AddAdmin(Admin admin);
+        Task<Admin?> GetAdminByUsernameAsync(string username);
+        Task<Admin?> GetAdminByEmailAsync(string email);
+        Task AddAdminAsync(Admin admin);
     }
 }

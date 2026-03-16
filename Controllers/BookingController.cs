@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using FlightBookingBackend.DTOs;
 using FlightBookingBackend.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-
 namespace FlightBookingBackend.Controllers
 {
     [ApiController]
@@ -19,18 +17,18 @@ namespace FlightBookingBackend.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost("book")]
-        public IActionResult BookFlight([FromBody] BookingRequest request)
+        public async Task<IActionResult> BookFlight([FromBody] BookingRequest request)
         {
             var userId = int.Parse(User.FindFirst("UserId")!.Value);
-            var result = _bookingService.CreateBooking(request, userId);
+            var result = await _bookingService.CreateBookingAsync(request, userId);
             return Ok(result);
         }
 
         [Authorize]
         [HttpGet("search/{flightNumber}")]
-        public IActionResult SearchBooking([FromQuery] string bookingReference)
+        public async Task<IActionResult> SearchBooking([FromQuery] string bookingReference)
         {
-            var result = _bookingService.SearchBooking(bookingReference);
+            var result = await _bookingService.SearchBookingAsync(bookingReference);
             if (result is null)
                 return NotFound("Booking not found");
 

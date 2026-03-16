@@ -28,14 +28,8 @@ namespace FlightBookingBackend.Services
             _emailService = emailService;
         }
 
-        public string Register(RegisterRequest request)
+        public async Task<string> RegisterAsync(RegisterRequest request)
         {
-            if (_authRepository.GetUserByUsername(request.Username) != null)
-                throw new BadRequestException("Username already exists");
-
-            if (_authRepository.GetUserByEmail(request.Email) != null)
-                throw new BadRequestException("Email already exists");
-
             if (string.IsNullOrWhiteSpace(request.Username) || request.Username.Length < 3)
                 throw new BadRequestException("Username must be at least 3 characters");
 
@@ -45,6 +39,11 @@ namespace FlightBookingBackend.Services
             if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 6)
                 throw new BadRequestException("Password must be at least 6 characters");
 
+            if (await _authRepository.GetUserByUsernameAsync(request.Username) != null)
+                throw new BadRequestException("Username already exists");
+
+            if (await _authRepository.GetUserByEmailAsync(request.Email) != null)
+                throw new BadRequestException("Email already exists");
 
             var user = new User
             {
@@ -53,11 +52,11 @@ namespace FlightBookingBackend.Services
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
 
-            _authRepository.AddUser(user);
+            await _authRepository.AddUserAsync(user);
 
             try
             {
-                _emailService.SendEmail(
+                await _emailService.SendEmailAsync(
                     request.Email,
                     "Welcome to Flight Booking System",
                     $"Hello {request.Username},\n\nYour account has been created successfully.\n\nThank you for registering with Flight Booking System."
@@ -65,14 +64,15 @@ namespace FlightBookingBackend.Services
             }
             catch
             {
+                // Email failure must not fail the registration
             }
 
             return "User registered successfully";
         }
 
-        public string Login(LoginRequest request)
+        public async Task<string> LoginAsync(LoginRequest request)
         {
-            var user = _authRepository.GetUserByUsername(request.Username);
+            var user = await _authRepository.GetUserByUsernameAsync(request.Username);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                 throw new UnauthorizedException("Invalid username or password");
@@ -80,21 +80,15 @@ namespace FlightBookingBackend.Services
             return GenerateToken(user.UserId.ToString(), user.Username, "User");
         }
 
-
-        public string AdminLogin(AdminLoginRequest request)
+        public async Task<string> AdminLoginAsync(AdminLoginRequest request)
         {
-            var admin = _adminRepository.GetAdminByUsername(request.Username);
+            var admin = await _adminRepository.GetAdminByUsernameAsync(request.Username);
 
-            if (admin == null)
-                throw new UnauthorizedException("Invalid admin credentials");
-
-            if (request.Password != admin.Password)
+            if (admin == null || request.Password != admin.Password)
                 throw new UnauthorizedException("Invalid admin credentials");
 
             return GenerateToken(admin.Id.ToString(), admin.Username, "Admin");
         }
-
-
 
         private string GenerateToken(string id, string username, string role)
         {

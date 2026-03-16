@@ -1,5 +1,4 @@
 using FlightBookingBackend.DTOs;
-
 using FlightBookingBackend.Exceptions;
 using FlightBookingBackend.Interfaces;
 using FlightBookingBackend.Models;
@@ -28,15 +27,15 @@ namespace FlightBookingBackend.Services
             _authRepository = authRepository;
         }
 
-        public string CreateBooking(BookingRequest request, int userId)
+        public async Task<string> CreateBookingAsync(BookingRequest request, int userId)
         {
-            var flight = _flightRepository.GetFlightByNumber(request.FlightNumber)
+            var flight = await _flightRepository.GetFlightByNumberAsync(request.FlightNumber)
                 ?? throw new NotFoundException("Flight not found");
 
             if (flight.AvailableSeats <= 0)
                 throw new BadRequestException("No seats available on this flight");
 
-            var user = _authRepository.GetUserById(userId)
+            var user = await _authRepository.GetUserByIdAsync(userId)
                 ?? throw new NotFoundException("User not found");
 
             if (string.IsNullOrWhiteSpace(request.PassengerName) || request.PassengerName.Length < 2)
@@ -44,11 +43,10 @@ namespace FlightBookingBackend.Services
 
             if (request.Gender != "Male" && request.Gender != "Female" && request.Gender != "Other")
                 throw new BadRequestException("Gender must be Male, Female, or Other");
-                
 
             flight.AvailableSeats -= 1;
 
-            var fareDetails = _fareService.CalculateFare(request.FlightNumber);
+            var fareDetails = await _fareService.CalculateFareAsync(request.FlightNumber);
 
             var booking = new Booking
             {
@@ -64,11 +62,11 @@ namespace FlightBookingBackend.Services
                 BookingStatus = "Confirmed"
             };
 
-            _bookingRepository.AddBooking(booking);
+            await _bookingRepository.AddBookingAsync(booking);
 
             try
             {
-                _emailService.SendEmail(
+                await _emailService.SendEmailAsync(
                     user.Email,
                     "Booking Confirmed - Flight Booking System",
                     $"Dear {booking.PassengerName},\n\n" +
@@ -94,9 +92,9 @@ namespace FlightBookingBackend.Services
             return $"Booking successful. Your Booking Reference: {booking.BookingReference}";
         }
 
-        public BookingResponse? SearchBooking(string bookingReference)
+        public async Task<BookingResponse?> SearchBookingAsync(string bookingReference)
         {
-            var booking = _bookingRepository.GetBookingByReference(bookingReference);
+            var booking = await _bookingRepository.GetBookingByReferenceAsync(bookingReference);
             if (booking == null) return null;
 
             return new BookingResponse

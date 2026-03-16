@@ -4,8 +4,8 @@ namespace FlightBookingBackend.Interfaces
 {
     public interface IAuthService
     {
-        string Register(RegisterRequest request);
-        string Login(LoginRequest request);
-        string AdminLogin(AdminLoginRequest request);
+        Task<string> RegisterAsync(RegisterRequest request);
+        Task<string> LoginAsync(LoginRequest request);
+        Task<string> AdminLoginAsync(AdminLoginRequest request);
     }
 }

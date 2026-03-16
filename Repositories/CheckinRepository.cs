@@ -1,6 +1,7 @@
 using FlightBookingBackend.Data;
 using FlightBookingBackend.Interfaces;
 using FlightBookingBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightBookingBackend.Repositories
 {
@@ -13,15 +14,15 @@ namespace FlightBookingBackend.Repositories
             _context = context;
         }
 
-        public void AddCheckin(CheckIn checkin)
+        public async Task AddCheckinAsync(CheckIn checkin)
         {
             _context.CheckIns.Add(checkin);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public int GetCheckinCount()
+        public async Task<int> GetCheckinCountAsync()
         {
-            return _context.CheckIns.Count();
+            return await _context.CheckIns.CountAsync();
         }
     }
 }

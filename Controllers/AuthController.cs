@@ -16,24 +16,23 @@ namespace FlightBookingBackend.Controllers
         }
 
         [HttpPost("user/register")]
-        public IActionResult Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            var result = _authService.Register(request);
+            var result = await _authService.RegisterAsync(request);
             return Ok(result);
         }
 
         [HttpPost("user/login")]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var result = _authService.Login(request);
+            var result = await _authService.LoginAsync(request);
             return Ok(new { Token = result });
         }
-            
 
         [HttpPost("admin/login")]
-        public IActionResult AdminLogin([FromBody] AdminLoginRequest request)
+        public async Task<IActionResult> AdminLogin([FromBody] AdminLoginRequest request)
         {
-            var result = _authService.AdminLogin(request);
+            var result = await _authService.AdminLoginAsync(request);
             return Ok(new { Token = result });
         }
     }

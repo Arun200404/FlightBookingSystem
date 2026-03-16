@@ -4,9 +4,9 @@ namespace FlightBookingBackend.Interfaces
 {
     public interface IAuthRepository
     {
-        User? GetUserByEmail(string email);
-        void AddUser(User user);
-        User? GetUserByUsername(string username);
-        User? GetUserById(int id);
+        Task<User?> GetUserByEmailAsync(string email);
+        Task AddUserAsync(User user);
+        Task<User?> GetUserByUsernameAsync(string username);
+        Task<User?> GetUserByIdAsync(int id);
     }
 }

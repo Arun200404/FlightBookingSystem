@@ -17,9 +17,9 @@ namespace FlightBookingBackend.Controllers
 
         [Authorize(Roles = "User")]
         [HttpPost]
-        public IActionResult Checkin([FromQuery] string bookingReference)
+        public async Task<IActionResult> Checkin([FromQuery] string bookingReference)
         {
-            var result = _checkinService.DoCheckin(bookingReference);
+            var result = await _checkinService.DoCheckinAsync(bookingReference);
             return Ok(result);
         }
     }

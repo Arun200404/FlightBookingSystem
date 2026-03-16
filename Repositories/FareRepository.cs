@@ -1,6 +1,7 @@
 using FlightBookingBackend.Data;
 using FlightBookingBackend.Exceptions;
 using FlightBookingBackend.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightBookingBackend.Repositories
 {
@@ -13,9 +14,10 @@ namespace FlightBookingBackend.Repositories
             _context = context;
         }
 
-        public decimal GetBaseFare(string flightNumber)
+        public async Task<decimal> GetBaseFareAsync(string flightNumber)
         {
-            var flight = _context.Flights.FirstOrDefault(f => f.FlightNumber == flightNumber)
+            var flight = await _context.Flights
+                .FirstOrDefaultAsync(f => f.FlightNumber == flightNumber)
                 ?? throw new NotFoundException($"Flight '{flightNumber}' not found");
 
             return flight.Fare;

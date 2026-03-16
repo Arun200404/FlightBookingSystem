@@ -1,6 +1,7 @@
 using FlightBookingBackend.Data;
 using FlightBookingBackend.Interfaces;
 using FlightBookingBackend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightBookingBackend.Repositories
 {
@@ -13,39 +14,42 @@ namespace FlightBookingBackend.Repositories
             _context = context;
         }
 
-        public void AddFlight(Flight flight)
+        public async Task AddFlightAsync(Flight flight)
         {
             _context.Flights.Add(flight);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Flight? GetFlightByNumber(string flightNumber)
+        public async Task<Flight?> GetFlightByNumberAsync(string flightNumber)
         {
-            return _context.Flights.FirstOrDefault(f => f.FlightNumber == flightNumber);
+            return await _context.Flights
+                .FirstOrDefaultAsync(f => f.FlightNumber == flightNumber);
         }
 
-        public List<Flight> GetAllFlights()
+        public async Task<List<Flight>> GetAllFlightsAsync()
         {
-            return _context.Flights.ToList();
+            return await _context.Flights.ToListAsync();
         }
 
-        public List<Flight> SearchFlights(string source, string destination, DateTime date)
+        public async Task<List<Flight>> SearchFlightsAsync(string source, string destination, DateTime date)
         {
-            return _context.Flights
-                .Where(f => f.Source == source && f.Destination == destination && f.DepartureTime.Date == date.Date)
-                .ToList();
+            return await _context.Flights
+                .Where(f => f.Source == source
+                         && f.Destination == destination
+                         && f.DepartureTime.Date == date.Date)
+                .ToListAsync();
         }
 
-        public void UpdateFlight(Flight flight)
+        public async Task UpdateFlightAsync(Flight flight)
         {
             _context.Flights.Update(flight);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteFlight(Flight flight)
+        public async Task DeleteFlightAsync(Flight flight)
         {
             _context.Flights.Remove(flight);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

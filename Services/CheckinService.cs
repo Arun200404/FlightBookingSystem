@@ -20,15 +20,15 @@ namespace FlightBookingBackend.Services
             _emailService = emailService;
         }
 
-        public string DoCheckin(string bookingReference)
+        public async Task<string> DoCheckinAsync(string bookingReference)
         {
-            var booking = _bookingRepository.GetBookingByReference(bookingReference)
+            var booking = await _bookingRepository.GetBookingByReferenceAsync(bookingReference)
                 ?? throw new NotFoundException("Booking not found");
 
             if (booking.BookingStatus == "CheckedIn")
                 throw new BadRequestException("Already checked in for this booking");
 
-            var count = _checkinRepository.GetCheckinCount() + 1;
+            var count = await _checkinRepository.GetCheckinCountAsync() + 1;
             var seatNumber = "A" + count;
 
             var checkin = new CheckIn
@@ -41,13 +41,13 @@ namespace FlightBookingBackend.Services
             };
 
             booking.BookingStatus = "CheckedIn";
-            _bookingRepository.Save();
+            await _bookingRepository.SaveAsync();
 
-            _checkinRepository.AddCheckin(checkin);
+            await _checkinRepository.AddCheckinAsync(checkin);
 
             try
             {
-                _emailService.SendEmail(
+                await _emailService.SendEmailAsync(
                     booking.Email,
                     "Check-In Confirmed - Flight Booking System",
                     $"Dear {checkin.PassengerName},\n\n" +

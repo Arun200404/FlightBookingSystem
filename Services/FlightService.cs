@@ -15,12 +15,12 @@ namespace FlightBookingBackend.Services
             _flightRepository = flightRepository;
         }
 
-        public string AddFlight(FlightRequest request)
+        public async Task<string> AddFlightAsync(FlightRequest request)
         {
             if (!Regex.IsMatch(request.FlightNumber, @"^[A-Z]{2}\d{3}$"))
                 throw new BadRequestException("Flight number must be 2 uppercase letters followed by 3 digits (e.g. AK101)");
 
-            if (_flightRepository.GetFlightByNumber(request.FlightNumber) != null)
+            if (await _flightRepository.GetFlightByNumberAsync(request.FlightNumber) != null)
                 throw new BadRequestException("Flight number already exists");
 
             if (request.Source.Trim().ToLower() == request.Destination.Trim().ToLower())
@@ -49,13 +49,13 @@ namespace FlightBookingBackend.Services
                 AvailableSeats = request.AvailableSeats
             };
 
-            _flightRepository.AddFlight(flight);
+            await _flightRepository.AddFlightAsync(flight);
             return "Flight added successfully";
         }
 
-        public string UpdateFlight(string flightNumber, UpdateFlightRequest request)
+        public async Task<string> UpdateFlightAsync(string flightNumber, UpdateFlightRequest request)
         {
-            var flight = _flightRepository.GetFlightByNumber(flightNumber)
+            var flight = await _flightRepository.GetFlightByNumberAsync(flightNumber)
                 ?? throw new NotFoundException($"Flight '{flightNumber}' not found");
 
             if (request.Source.Trim().ToLower() == request.Destination.Trim().ToLower())
@@ -80,27 +80,27 @@ namespace FlightBookingBackend.Services
             flight.Fare = request.Fare;
             flight.AvailableSeats = request.AvailableSeats;
 
-            _flightRepository.UpdateFlight(flight);
+            await _flightRepository.UpdateFlightAsync(flight);
             return $"Flight '{flightNumber}' updated successfully";
         }
 
-        public string DeleteFlight(string flightNumber)
+        public async Task<string> DeleteFlightAsync(string flightNumber)
         {
-            var flight = _flightRepository.GetFlightByNumber(flightNumber)
+            var flight = await _flightRepository.GetFlightByNumberAsync(flightNumber)
                 ?? throw new NotFoundException($"Flight '{flightNumber}' not found");
 
-            _flightRepository.DeleteFlight(flight);
+            await _flightRepository.DeleteFlightAsync(flight);
             return $"Flight '{flightNumber}' deleted successfully";
         }
 
-        public List<Flight> GetAllFlights()
+        public async Task<List<Flight>> GetAllFlightsAsync()
         {
-            return _flightRepository.GetAllFlights();
+            return await _flightRepository.GetAllFlightsAsync();
         }
 
-        public List<Flight> SearchFlights(string source, string destination, DateTime date)
+        public async Task<List<Flight>> SearchFlightsAsync(string source, string destination, DateTime date)
         {
-            return _flightRepository.SearchFlights(source, destination, date);
+            return await _flightRepository.SearchFlightsAsync(source, destination, date);
         }
     }
 }

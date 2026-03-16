@@ -12,9 +12,9 @@ namespace FlightBookingBackend.Services
             _fareRepository = fareRepository;
         }
 
-        public FareResponse CalculateFare(string flightNumber)
+        public async Task<FareResponse> CalculateFareAsync(string flightNumber)
         {
-            var baseFare = _fareRepository.GetBaseFare(flightNumber);
+            var baseFare = await _fareRepository.GetBaseFareAsync(flightNumber);
 
             var gst = baseFare * 0.05m;
             var finalFare = baseFare + gst;
@@ -23,7 +23,7 @@ namespace FlightBookingBackend.Services
             {
                 BaseFare = baseFare,
                 GST = gst,
-                FinalFare = Math.Round(finalFare,2)
+                FinalFare = Math.Round(finalFare, 2)
             };
         }
     }

@@ -17,9 +17,9 @@ namespace FlightBookingBackend.Controllers
 
         [Authorize]
         [HttpGet("get")]
-        public IActionResult GetFare([FromQuery] string flightNumber)
+        public async Task<IActionResult> GetFare([FromQuery] string flightNumber)
         {
-            var result = _fareService.CalculateFare(flightNumber);
+            var result = await _fareService.CalculateFareAsync(flightNumber);
             return Ok(result);
         }
     }

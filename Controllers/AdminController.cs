@@ -18,25 +18,25 @@ namespace FlightBookingBackend.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("flights/add")]
-        public IActionResult AddFlight([FromBody] FlightRequest request)
+        public async Task<IActionResult> AddFlight([FromBody] FlightRequest request)
         {
-            var result = _flightService.AddFlight(request);
+            var result = await _flightService.AddFlightAsync(request);
             return Ok(result);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("flights/update/{flightNumber}")]
-        public IActionResult UpdateFlight(string flightNumber, [FromBody] UpdateFlightRequest request)
+        public async Task<IActionResult> UpdateFlight(string flightNumber, [FromBody] UpdateFlightRequest request)
         {
-            var result = _flightService.UpdateFlight(flightNumber, request);
+            var result = await _flightService.UpdateFlightAsync(flightNumber, request);
             return Ok(result);
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("flights/delete/{flightNumber}")]
-        public IActionResult DeleteFlight(string flightNumber)
+        public async Task<IActionResult> DeleteFlight(string flightNumber)
         {
-            var result = _flightService.DeleteFlight(flightNumber);
+            var result = await _flightService.DeleteFlightAsync(flightNumber);
             return Ok(result);
         }
     }

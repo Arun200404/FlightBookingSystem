@@ -4,6 +4,6 @@ namespace FlightBookingBackend.Interfaces
 {
     public interface IFareService
     {
-        FareResponse CalculateFare(string flightNumber);
+        Task<FareResponse> CalculateFareAsync(string flightNumber);
     }
 }

@@ -13,7 +13,7 @@ namespace FlightBookingBackend.Services
             _configuration = configuration;
         }
 
-        public void SendEmail(string to, string subject, string body)
+        public async Task SendEmailAsync(string to, string subject, string body)
         {
             var smtpHost = _configuration["Email:SmtpHost"]!;
             var smtpPort = int.Parse(_configuration["Email:SmtpPort"]!);
@@ -38,7 +38,7 @@ namespace FlightBookingBackend.Services
 
             try
             {
-                smtp.Send(mail);
+                await smtp.SendMailAsync(mail);
             }
             catch (Exception ex)
             {
