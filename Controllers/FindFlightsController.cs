@@ -1,27 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
 using FlightBookingBackend.DTO;
 using FlightBookingBackend.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FlightBookingBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class FlightsController : ControllerBase
+    public class FindFlightsController : ControllerBase
     {
         private readonly IFlightService _flightService;
 
-        public FlightsController(IFlightService flightService)
+        public FindFlightsController(IFlightService flightService)
         {
             _flightService = flightService;
-        }
-
-        [Authorize]
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAllFlights()
-        {
-            var result = await _flightService.GetAllFlightsAsync();
-            return Ok(result);
         }
 
         [Authorize]

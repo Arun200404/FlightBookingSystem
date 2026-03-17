@@ -6,11 +6,11 @@ namespace FlightBookingBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class FareController : ControllerBase
+    public class FlightFareController : ControllerBase
     {
         private readonly IFareService _fareService;
 
-        public FareController(IFareService fareService)
+        public FlightFareController(IFareService fareService)
         {
             _fareService = fareService;
         }

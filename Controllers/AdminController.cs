@@ -39,5 +39,13 @@ namespace FlightBookingBackend.Controllers
             var result = await _flightService.DeleteFlightAsync(flightNumber);
             return Ok(result);
         }
+
+        [Authorize(Roles="Admin")]
+        [HttpGet("flights/Running")]
+        public async Task<IActionResult> GetAllFlights()
+        {
+            var result = await _flightService.GetAllFlightsAsync();
+            return Ok(result);
+        }
     }
 }

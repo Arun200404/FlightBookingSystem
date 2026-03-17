@@ -1,7 +1,6 @@
 using FlightBookingBackend.Exceptions;
 using FlightBookingBackend.Interfaces;
 using FlightBookingBackend.Models;
-
 namespace FlightBookingBackend.Services
 {
     public class CheckinService : ICheckinService
@@ -25,7 +24,7 @@ namespace FlightBookingBackend.Services
             var booking = await _bookingRepository.GetBookingByReferenceAsync(bookingReference)
                 ?? throw new NotFoundException("Booking not found");
 
-            if (booking.BookingStatus == "CheckedIn")
+            if (booking.BookingStatus == "CheckedIn") 
                 throw new BadRequestException("Already checked in for this booking");
 
             var count = await _checkinRepository.GetCheckinCountAsync() + 1;
@@ -56,7 +55,7 @@ namespace FlightBookingBackend.Services
                     $"Flight Number      : {booking.FlightNumber}\n" +
                     $"Seat Number        : {seatNumber}\n" +
                     $"Booking Reference  : {bookingReference}\n\n" +
-                    $"Have a great flight!"
+                    $"Have a good Journy!"
                 );
             }
             catch

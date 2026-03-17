@@ -51,8 +51,8 @@ namespace FlightBookingBackend.Services
 
             var fareDetails = await _fareService.CalculateFareAsync(request.FlightNumber);
 
-            var paymentSuccess = await _paymentService.ProcessPaymentAsync(fareDetails.FinalFare);
-            if (!paymentSuccess)
+            var paySuccess = await _paymentService.ProcessPaymentAsync(fareDetails.FinalFare);
+            if (!paySuccess)
                 throw new BadRequestException("Payment failed. Booking not confirmed.");
 
 

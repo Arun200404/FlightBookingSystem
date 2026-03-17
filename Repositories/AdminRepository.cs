@@ -19,17 +19,5 @@ namespace FlightBookingBackend.Repositories
             return await _context.Admins
                 .FirstOrDefaultAsync(a => a.Username == username);
         }
-
-        public async Task<Admin?> GetAdminByEmailAsync(string email)
-        {
-            return await _context.Admins
-                .FirstOrDefaultAsync(a => a.Email == email);
-        }
-
-        public async Task AddAdminAsync(Admin admin)
-        {
-            _context.Admins.Add(admin);
-            await _context.SaveChangesAsync();
-        }
     }
 }
