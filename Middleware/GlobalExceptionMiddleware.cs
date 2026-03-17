@@ -44,7 +44,7 @@ namespace FlightBookingBackend.Middleware
             context.Response.StatusCode = statusCode;
             context.Response.ContentType = "application/json";
 
-            var response = JsonSerializer.Serialize(new { error = message });
+            var response = JsonSerializer.Serialize(new { message });
             await context.Response.WriteAsync(response);
         }
     }
