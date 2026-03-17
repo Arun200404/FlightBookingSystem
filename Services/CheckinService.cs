@@ -27,7 +27,7 @@ namespace FlightBookingBackend.Services
             if (booking.BookingStatus == "CheckedIn") 
                 throw new BadRequestException("Already checked in for this booking");
 
-            var count = await _checkinRepository.GetCheckinCountAsync() + 1;
+            var count = await _checkinRepository.GetCheckinCountAsync(booking.FlightNumber) + 1;
             var seatNumber = "A" + count;
 
             var checkin = new CheckIn
