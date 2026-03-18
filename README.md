@@ -1,15 +1,5 @@
 <div align="center">
 
-```
-███████╗██████╗ ███████╗
-██╔════╝██╔══██╗██╔════╝
-█████╗  ██████╔╝███████╗
-██╔══╝  ██╔══██╗╚════██║
-██║     ██████╔╝███████║
-╚═╝     ╚═════╝ ╚══════╝
-Flight Booking System
-```
-
 # ✈️ Flight Booking System
 
 ### A production-grade REST API for seamless flight search, booking, and check-in
