@@ -35,7 +35,7 @@ namespace FlightBookingBackend.Services
             var flight = await _flightRepository.GetFlightByNumberAsync(request.FlightNumber)
                 ?? throw new NotFoundException("Flight not found");
 
-            if (flight.DepartureTime.AddHours(-1) <= DateTime.Now)
+            if (flight.DepartureTime.AddHours(-1) <= DateTime.UtcNow)
                 throw new BadRequestException("Booking Time Closed");
 
             if (flight.AvailableSeats <= 0)
