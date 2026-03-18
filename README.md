@@ -179,7 +179,7 @@ FlightBookingSystem/
 │   └── ApplicationDbContext.cs
 ├── Migrations/
 ├── Tests/                         # NUnit + Moq unit tests
-├── appsettings.json               # Connection strings, JWT, SMTP config
+├── appsettings.example.json               # Connection strings, JWT, SMTP config
 └── Program.cs
 ```
 
@@ -298,7 +298,7 @@ dotnet run
 
 ## ⚙️ Configuration
 
-Update `appsettings.json` with your local settings:
+Update `appsettings.example.json` file name to `appsettings.json` with your local settings:
 
 ```json
 {
